@@ -1,0 +1,32 @@
+trigger:
+ - main
+
+pool: default
+
+stages:
+  - stage: Lintpython
+    displayName: LintPython
+    jobs:
+      - job: myjob
+        steps:
+        - task: PowerShell@2
+          continueOnError: true
+          inputs:
+            targetType: 'inline'
+            script: 'ruff check'
+
+  - stage: PublishArtifacts
+    displayName: artifact
+    jobs:
+      - job: publish
+        steps:
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: '$(System.DefaultWorkingDirectory)/app.py'
+              artifact: 'todoapp_artifact'
+              publishLocation: 'pipeline'
+
+
+          
+
+
